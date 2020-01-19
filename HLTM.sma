@@ -2,7 +2,7 @@
 #include <fakemeta>
 #include "hl.inc"                     
 #define PLUGIN "Team Menu"
-#define VERSION "1.0"
+#define VERSION "2.3"
 #define AUTHOR "Glaster"
 
 new const g_Skins[][] =
@@ -11,8 +11,18 @@ new const g_Skins[][] =
 "GERMANY",
 "USA",
 "CHINA",
-"VIP"
+"VIP",
+"ALIENS"
 };
+
+
+
+stock is_user_admin(id)
+{
+    new __flags=get_user_flags(id);
+    return (__flags>0 && !(__flags&ADMIN_USER));
+}
+
 
 public plugin_precache()
 {
@@ -31,7 +41,9 @@ menu_additem(i_Menu, "\w[1] GERMANY", "1", 0);
 menu_additem(i_Menu, "\w[2] USSR", "2", 0);
 menu_additem(i_Menu, "\w[3] USA", "3", 0);
 menu_additem(i_Menu, "\w[4] CHINA", "4", 0);
-menu_additem(i_Menu, "\y[5] VIP", "6", 0);
+menu_additem(i_Menu, "\y[5] VIP", "5", 0);
+menu_additem(i_Menu, "\w[6] ALIENS", "6", 0);
+menu_additem(i_Menu, "\r[7] EXIT", "7", 0);
 menu_display(id, i_Menu, 0)
 }
 
@@ -64,16 +76,20 @@ hl_set_user_model(id, g_Skins[3])
 
                                                      
 }                              
-case 5: {           
-if( get_user_flags(id) & ADMIN_IMMUNITY || get_user_flags(id) & ADMIN_RESERVATION || get_user_flags(id) & ADMIN_KICK || get_user_flags(id) & ADMIN_BAN || get_user_flags(id) & ADMIN_SLAY || get_user_flags(id) & ADMIN_MAP){
+case 5: { 
+if(is_user_admin(id)){ 
 hl_set_user_team(id, "VIP") 
 hl_set_user_model(id, g_Skins[4]) 
 }else {
 client_print(id, print_chat, "You shold be VIP or Admin to be a part of this team. You can buy it by vk.com/pristavka2013")
 }
 }
-
+case 6:{
+hl_set_user_team(id, "ALIENS") 
+hl_set_user_model(id, g_Skins[5]) 
 }
-return PLUGIN_HANDLED;
+case 7:{
+menu_destroy(menu)
+}
 
 }
