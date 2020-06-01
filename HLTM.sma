@@ -28,7 +28,7 @@ new const g_Skins[][] =
 "USA",                                               
 "CHINA",
 "VIP",
-"ALIENS!",                  
+"ALIENS!"                  
 
 };
 
